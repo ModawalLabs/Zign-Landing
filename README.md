@@ -22,8 +22,8 @@ draws it. Night bands (`night`) sit a step deeper than the page.
 **Atmosphere and motion.** Depth comes from light: `Aurora`
 (`src/components/fx/aurora.tsx`) drifts pools of indigo, violet and sky
 behind the hero, the Copilot band, the pricing surface and the closing; a
-film grain sits over the whole page; sections carry a dot grid or
-ruled-paper texture. Product frames are glass bezels (`.glass-frame`), the
+film grain sits over the whole page; sections carry a dot grid. Product
+frames are glass bezels (`.glass-frame`), the
 navigation floats in a glass pill, the certificate is a white sheet that
 floats and tilts toward the pointer with a holographic seal and a foil
 sheen. The hero carries the brand's signature stroke cast in glass
@@ -41,13 +41,21 @@ marquee hurries with scroll velocity. A short intro curtain signs the mark
 before the page lifts in. All of it stands down under
 `prefers-reduced-motion`.
 
-**Structure.** The page is numbered like a contract. Each section opens
-with a rule that draws itself across the page carrying `§ 0n` at one end and
-the section's name at the other (`SectionHead`), then its title and a
-one-line lede. There are no cards: capabilities are an index beside rows
-drawn straight on the page, pricing is one surface divided by hairlines,
-and the certificate is a sheet. Sections keep an 80px rhythm on desktop
-(`py-16 lg:py-20`).
+**Structure.** The page is numbered like a contract, § 01 to § 06: how it
+works, Zign AI, the workspace, around the signature, security, pricing.
+Each section opens with a rule that draws itself across the page carrying
+`§ 0n` at one end and the section's name at the other (`SectionHead`), then
+its title and a one-sentence lede. There are no cards: the three
+capabilities sit on one surface divided by hairlines, pricing is one pane
+of glass with the plans as columns and the recommended plan as an indigo
+inset within it, and the certificate is a sheet. Sections keep
+a 64px rhythm on desktop (`py-14 lg:py-16`).
+
+**Keep it tight.** The page was cut to its main points on purpose (about
+9,500px on desktop, down from 12,200): no statement section, no FAQ, three
+capabilities, three security guarantees, three product screens, and a
+200vh scroll story. Copy is one sentence per lede and two lines per
+paragraph. Add a section only if it carries a point none of these do.
 
 The product itself lives in `../zign-v2`. Nothing on this page claims a
 feature, price or mechanism that zign-v2 (or the zign-modules backend it
@@ -94,10 +102,10 @@ curtain (`introHasPlayed` in `fx/intro.tsx`).
 
 ## Environment
 
-| Variable                    | Purpose                                                                                   |
-| --------------------------- | ----------------------------------------------------------------------------------------- |
-| `NEXT_PUBLIC_SITE_URL`      | This site's public origin. Enables `metadataBase`, the canonical URL and `/sitemap.xml`.  |
-| `NEXT_PUBLIC_CONTACT_EMAIL` | Optional. When it looks like an address, "Write to us" appears in the FAQ and the footer. |
+| Variable                    | Purpose                                                                                  |
+| --------------------------- | ---------------------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_SITE_URL`      | This site's public origin. Enables `metadataBase`, the canonical URL and `/sitemap.xml`. |
+| `NEXT_PUBLIC_CONTACT_EMAIL` | Optional. When it looks like an address, a "Contact" link appears in the footer.         |
 
 ## Where things are
 
@@ -198,7 +206,7 @@ optical-size axis makes its two files 246 KB; without the axis they are
 
 - Landmarks, a skip link, one `h1`, and every section labelled by its heading.
 - The tab lists (Copilot questions, product screens) follow the ARIA tabs
-  pattern with arrow-key navigation; the FAQ is a disclosure list.
+  pattern with arrow-key navigation.
 - The mobile menu is a modal dialog: focus moves in, the page behind is
   `inert`, Escape closes it and focus returns to the toggle.
 - Anything that advances on its own pauses on hover and focus and has a
