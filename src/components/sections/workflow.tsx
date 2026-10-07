@@ -155,7 +155,10 @@ function SheetStory() {
               </AnimatePresence>
             </div>
 
-            <ol className="relative mt-10 border-l border-line">
+            <ol
+              aria-label="Steps"
+              className="relative mt-10 border-l border-line"
+            >
               <motion.span
                 aria-hidden
                 className="absolute top-0 -left-px h-full w-px origin-top bg-indigo"
@@ -166,7 +169,7 @@ function SheetStory() {
                   <button
                     type="button"
                     onClick={() => goTo(i)}
-                    aria-label={`Go to step ${i + 1}, ${ch.kicker}`}
+                    aria-current={chapter === i ? "step" : undefined}
                     className={cn(
                       "flex items-center gap-3 py-2 pl-6 text-[13.5px] transition-colors duration-300",
                       chapter === i ? "text-ink" : "text-muted hover:text-ink",
@@ -393,7 +396,7 @@ function Stage({ p }: { p: MotionValue<number> }) {
         {/* The seal, stamped on at the end. */}
         <motion.span
           aria-hidden
-          className="seal absolute right-8 bottom-24 grid size-16 place-items-center rounded-full bg-sheet"
+          className="seal absolute top-7 right-7 grid size-16 place-items-center rounded-full bg-sheet"
           style={{ opacity: sealO, scale: sealS, rotate: sealR }}
         >
           <SignatureMark size={36} className="text-indigo-ink" />

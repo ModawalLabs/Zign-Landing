@@ -5,7 +5,7 @@ import { motion } from "motion/react";
 import { EASE } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
-const WAVE =
+export const WAVE =
   "M 40 65 C 55 30, 75 30, 85 55 C 95 80, 110 80, 120 55 C 130 30, 145 25, 155 50 C 162 65, 168 60, 172 52";
 
 /**

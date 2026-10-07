@@ -452,7 +452,7 @@ function CursorGlow({
   return (
     <motion.div
       aria-hidden
-      className="pointer-events-none absolute top-0 left-0 -z-10 hidden size-[640px] rounded-full bg-[radial-gradient(closest-side,rgb(128_143_239/0.14),transparent)] blur-2xl lg:block"
+      className="pointer-events-none absolute top-0 left-0 -z-10 hidden size-[640px] rounded-full bg-[radial-gradient(closest-side,rgb(128_143_239/0.14),rgb(128_143_239/0.09)_36%,rgb(128_143_239/0.04)_64%,rgb(128_143_239/0.01)_84%,transparent)] lg:block"
       style={{ x: left, y: top }}
       animate={{ opacity: lit ? 1 : 0 }}
       transition={{ duration: 0.8, ease: EASE }}

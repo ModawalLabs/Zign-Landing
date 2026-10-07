@@ -26,7 +26,6 @@
 
   /* The accent, lifted so it reads on the dark */
   --color-indigo: #8a97f0;
-  --color-indigo-deep: #6b7ae6;
   --color-indigo-lift: #a9b3f6;
   --color-indigo-wash: #1a1d2e;
   /* ...and as it reads on white paper */
@@ -54,12 +53,10 @@
   --color-pending: #d69650;
   --color-pending-ink: #a0631c;
   --color-pending-lift: #d69650;
-  --color-tampered: #e06a60;
 
   /* Light: the neighbours indigo borrows for its weather */
   --color-violet: #6b5ce7;
   --color-sky: #7fb0ff;
-  --color-dawn: #ffe7d3;
 
   --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
   --font-serif: var(--font-serif-display), ui-serif, Georgia, serif;
@@ -188,12 +185,6 @@ html.lenis body {
     0 10px 28px -8px rgb(236 238 244 / 0.28);
 }
 
-.key-paper {
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.1),
-    0 1px 2px rgb(0 0 0 / 0.4);
-}
-
 /* A spotlight that follows the pointer across a cell. Its position is two
    custom properties the Spotlight wrapper keeps current. */
 .spotlight {
@@ -310,21 +301,24 @@ html.lenis body {
 }
 .aurora-a {
   animation: aurora-a 28s ease-in-out infinite;
-  will-change: transform;
 }
 .aurora-b {
   animation: aurora-b 34s ease-in-out infinite;
-  will-change: transform;
 }
 .aurora-c {
   animation: aurora-c 40s ease-in-out infinite;
-  will-change: transform;
+}
+/* Off screen, the weather waits where it is. */
+.aurora[data-still] > * {
+  animation-play-state: paused;
 }
 
 /* Film grain over the whole page, so every surface reads as a material. */
 .film-grain {
   position: fixed;
-  inset: -40%;
+  /* Only as much overscan as the jitter below needs, so the layer is not
+     three screens of noise to paint. */
+  inset: -6%;
   z-index: 70;
   pointer-events: none;
   opacity: 0.05;
@@ -411,22 +405,6 @@ html.lenis body {
     );
 }
 
-/* A small floating card of frosted glass. */
-.glass-card {
-  background: linear-gradient(
-    180deg,
-    rgb(28 29 36 / 0.82),
-    rgb(20 21 26 / 0.72)
-  );
-  -webkit-backdrop-filter: blur(16px) saturate(1.5);
-  backdrop-filter: blur(16px) saturate(1.5);
-  box-shadow:
-    inset 0 1px 0 rgb(255 255 255 / 0.1),
-    0 0 0 1px rgb(255 255 255 / 0.07),
-    0 12px 30px -12px rgb(0 0 0 / 0.6),
-    0 30px 60px -30px rgb(56 75 199 / 0.35);
-}
-
 /* The floating pill the navigation sits in. */
 .glass-pill {
   -webkit-backdrop-filter: blur(18px) saturate(1.6);
@@ -473,38 +451,15 @@ html.lenis body {
     --spin: 360deg;
   }
 }
-.conic-border::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  border-radius: inherit;
-  padding: 1px;
-  pointer-events: none;
-  background: conic-gradient(
-    from var(--spin),
-    rgb(128 143 239 / 0.08),
-    rgb(128 143 239 / 0.95) 18%,
-    rgb(107 92 231 / 0.95) 32%,
-    rgb(127 176 255 / 0.6) 44%,
-    rgb(128 143 239 / 0.08) 58%,
-    rgb(128 143 239 / 0.08)
-  );
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  animation: spin-border 7s linear infinite;
-}
 
 /* The seal on a certificate: a slow holographic ring under the mark. */
-.seal {
-  position: relative;
-  isolation: isolate;
+/* In the components layer, so a utility on the same element (`absolute`
+   on a seal stamped onto a sheet) still wins. */
+@layer components {
+  .seal {
+    position: relative;
+    isolation: isolate;
+  }
 }
 .seal::before {
   content: "";
@@ -568,28 +523,8 @@ html.lenis body {
     transform: translate3d(0, -9px, 0);
   }
 }
-.float-slow {
-  animation: float-y 7s ease-in-out infinite;
-}
 .float-slower {
   animation: float-y 9.5s ease-in-out 1.2s infinite;
-}
-.float-slowest {
-  animation: float-y 11s ease-in-out 2.4s infinite;
-}
-
-@keyframes marquee {
-  to {
-    transform: translate3d(-50%, 0, 0);
-  }
-}
-.marquee-track {
-  display: flex;
-  width: max-content;
-  animation: marquee 70s linear infinite;
-}
-.marquee:hover .marquee-track {
-  animation-play-state: paused;
 }
 
 /* A word written in moving ink: mostly ink, with a pass of indigo, violet
@@ -622,9 +557,53 @@ html.lenis body {
 }
 
 /* The intro: a sheet of paper the mark signs before the page is shown.
-   It leaves on its own even if no script ever runs. */
+   The stroke, the dots, the name and the lift are all CSS, so they run
+   before any script arrives and the sheet leaves even if none ever does. */
 .intro-curtain {
-  animation: intro-exit 0.7s var(--ease-settle) 1.5s forwards;
+  animation: intro-exit 0.7s var(--ease-settle) 1.25s forwards;
+}
+.intro-mark path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: intro-draw 0.75s cubic-bezier(0.45, 0, 0.25, 1) 0.1s forwards;
+}
+.intro-mark circle {
+  opacity: 0;
+  transform: scale(0.4);
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: intro-dot 0.3s var(--ease-settle) 0.78s forwards;
+}
+.intro-mark circle:nth-of-type(2) {
+  animation-delay: 0.86s;
+}
+.intro-mark circle:nth-of-type(3) {
+  animation-delay: 0.94s;
+}
+.intro-label {
+  opacity: 0;
+  animation: intro-label 0.45s var(--ease-settle) 0.7s forwards;
+}
+@keyframes intro-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes intro-dot {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes intro-label {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 6px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
 }
 @keyframes intro-exit {
   to {
@@ -634,11 +613,114 @@ html.lenis body {
   }
 }
 
+/* The hero's entrance is CSS as well: the headline rises from behind its
+   baseline and the rest settles in, timed to the curtain, so the first
+   screen is complete on a slow phone at the same moment as on a desktop.
+   Delays are set inline from the intro's timing. */
+.hero-line {
+  display: block;
+  clip-path: inset(-0.3em -0.6em -0.24em -0.6em);
+}
+.hero-rise {
+  display: block;
+  transform: translate3d(0, 135%, 0) rotate(1.2deg);
+  transform-origin: 0% 100%;
+  animation: hero-rise 1.15s var(--ease-settle) forwards;
+}
+/* The lede and the keys are painted from the first frame, dim and out of
+   focus under the curtain, and come into focus as it lifts: the page is
+   ready the moment it arrives, and the brand moment plays over it. */
+.hero-fade {
+  animation: hero-fade 1s var(--ease-settle) both;
+}
+.hero-lift {
+  opacity: 0;
+  animation: hero-lift 1.3s var(--ease-settle) forwards;
+}
+/* The glass's poster is painted from the first frame too, dim and a touch
+   small under the curtain; the live glass inside the same box scales with
+   it, so the two always share a size. */
+.hero-glass {
+  animation: hero-glass 1.6s var(--ease-settle) both;
+}
+/* Back on the home page from another page in the same visit: the curtain
+   does not play again, so nothing waits for it. */
+.hero-instant :is(.hero-rise, .hero-fade, .hero-lift, .hero-glass) {
+  animation-delay: 0s !important;
+  animation-duration: 0.01ms !important;
+}
+/* A block that settles into place on arrival (the sign-in page). */
+.rise-in {
+  animation: rise-in 0.9s var(--ease-settle) both;
+}
+.nav-in {
+  opacity: 0;
+  animation: nav-in 0.9s var(--ease-settle) 0.9s forwards;
+}
+@keyframes hero-rise {
+  to {
+    transform: none;
+  }
+}
+@keyframes hero-fade {
+  from {
+    opacity: 0.35;
+    transform: translate3d(0, 18px, 0);
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+@keyframes hero-lift {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 48px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes hero-glass {
+  from {
+    opacity: 0.35;
+    transform: scale(0.94);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 14px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes nav-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -16px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;

@@ -30,10 +30,14 @@ const serif = Source_Serif_4({
   display: "swap",
 });
 
+/* The mono and the hand are not on the first screen's text, so they are
+   not preloaded; the browser fetches them when the first label or
+   signature needs them, after the display and interface faces. */
 const mono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
   display: "swap",
+  preload: false,
 });
 
 /* A hand for the signatures drawn on the page's paper. */
@@ -42,11 +46,15 @@ const signature = Mrs_Saint_Delafield({
   subsets: ["latin"],
   weight: "400",
   display: "swap",
+  preload: false,
 });
 
 export const metadata: Metadata = {
-  ...(site.url ? { metadataBase: new URL(site.url) } : {}),
-  alternates: { canonical: "/" },
+  /* A canonical URL must be absolute, so it is only declared once the
+     site's public origin is configured (NEXT_PUBLIC_SITE_URL). */
+  ...(site.url
+    ? { metadataBase: new URL(site.url), alternates: { canonical: "/" } }
+    : {}),
   title: "Zign · The agreement copilot",
   description:
     "Zign drafts, negotiates and signs your agreements with you. It reads every clause, places every field and walks each party to a signature, with a sealed record of every step.",
@@ -59,8 +67,8 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#f9f9fb",
-  colorScheme: "light",
+  themeColor: "#0e0f12",
+  colorScheme: "dark",
 };
 
 export default async function RootLayout({

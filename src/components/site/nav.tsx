@@ -9,6 +9,7 @@ import {
 import Link from "next/link";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 
+import { introHasPlayed } from "@/components/fx/intro";
 import { useLenis } from "@/components/providers/smooth-scroll";
 import { ButtonLink } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
@@ -28,6 +29,8 @@ export function Nav() {
   const [hidden, setHidden] = useState(false);
   const [hovered, setHovered] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
+  /* The pill arrives with the curtain, once per visit. */
+  const [enter] = useState(() => !introHasPlayed());
 
   useMotionValueEvent(scrollY, "change", (y) => {
     const previous = scrollY.getPrevious() ?? 0;
@@ -39,15 +42,18 @@ export function Nav() {
 
   return (
     <>
+      {/* The entrance is CSS on the pill (it plays before any script); the
+          header itself only moves to step aside while the reader scrolls. */}
       <motion.header
-        initial={{ y: -24, opacity: 0 }}
-        animate={{ y: hidden ? -120 : 0, opacity: 1 }}
+        initial={false}
+        animate={{ y: hidden ? -120 : 0 }}
         transition={{ duration: 0.7, ease: EASE }}
         className="pointer-events-none fixed inset-x-0 top-0 z-50 flex justify-center px-4 pt-4 sm:pt-5"
       >
         <div
           className={cn(
             "glass-pill pointer-events-auto flex items-center gap-1 rounded-full py-1.5 pr-1.5 pl-2 transition-[background-color] duration-500 ease-(--ease-settle)",
+            enter && "nav-in",
             raised || open ? "bg-card/85" : "bg-card/60",
           )}
         >

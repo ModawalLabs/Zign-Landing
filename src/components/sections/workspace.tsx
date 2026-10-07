@@ -212,7 +212,6 @@ export function Workspace() {
                       sizes="(min-width: 1320px) 1240px, 100vw"
                       quality={90}
                       placeholder="blur"
-                      priority={active === 0}
                       className="object-cover object-top"
                     />
                   </motion.div>

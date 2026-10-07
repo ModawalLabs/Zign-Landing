@@ -27,7 +27,7 @@ const BEATS = [
   600, 1350, 2850, 3500, 4700, 6100, 6950, 7350, 8700, 9500, 11100,
 ] as const;
 
-export const FINAL = BEATS.length;
+const FINAL = BEATS.length;
 
 export type DemoState = {
   step: number;

@@ -1,6 +1,11 @@
 "use client";
 
-import { motion, useAnimationFrame, useMotionValue } from "motion/react";
+import {
+  motion,
+  useAnimationFrame,
+  useInView,
+  useMotionValue,
+} from "motion/react";
 import { useRef } from "react";
 
 import { useLenis } from "@/components/providers/smooth-scroll";
@@ -27,11 +32,13 @@ export function Marquee() {
   const lenis = useLenis();
   const reduce = usePrefersReducedMotion();
   const x = useMotionValue(0);
+  const section = useRef<HTMLElement>(null);
   const track = useRef<HTMLUListElement>(null);
   const resting = useRef(false);
+  const inView = useInView(section);
 
   useAnimationFrame((_, delta) => {
-    if (reduce || resting.current) return;
+    if (reduce || resting.current || !inView) return;
     const half = (track.current?.scrollWidth ?? 0) / 2;
     if (!half) return;
     const hurry = Math.min(Math.abs(lenis?.velocity ?? 0), 60);
@@ -43,6 +50,7 @@ export function Marquee() {
 
   return (
     <section
+      ref={section}
       aria-label="Agreement types Zign handles"
       className="relative overflow-hidden border-y border-line bg-paper/70 [mask-image:linear-gradient(to_right,transparent,#000_10%,#000_90%,transparent)] py-4"
       onMouseEnter={() => (resting.current = true)}
