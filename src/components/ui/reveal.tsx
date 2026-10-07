@@ -27,7 +27,6 @@ export function RevealLines({
   lineClassName,
   delay = 0,
   stagger = 0.085,
-  immediate = false,
 }: {
   as?: "h1" | "h2" | "h3" | "p";
   id?: string;
@@ -36,8 +35,6 @@ export function RevealLines({
   lineClassName?: string;
   delay?: number;
   stagger?: number;
-  /** Play on mount rather than on entering the viewport (the hero). */
-  immediate?: boolean;
 }) {
   const reduce = usePrefersReducedMotion();
   const MotionTag = motion[Tag];
@@ -49,9 +46,8 @@ export function RevealLines({
       id={id}
       className={className}
       initial={reduce ? false : "hidden"}
-      {...(immediate
-        ? { animate: "shown" }
-        : { whileInView: "shown", viewport: VIEW })}
+      whileInView="shown"
+      viewport={VIEW}
     >
       {lines.map((line, i) => (
         <span
@@ -92,7 +88,6 @@ export function Reveal({
   delay = 0,
   y = 18,
   blur = true,
-  immediate = false,
   as = "div",
 }: {
   children: React.ReactNode;
@@ -100,12 +95,10 @@ export function Reveal({
   delay?: number;
   y?: number;
   blur?: boolean;
-  immediate?: boolean;
   as?: "div" | "p" | "li" | "span";
 }) {
   const reduce = usePrefersReducedMotion();
   const MotionTag = motion[as];
-  const to = { opacity: 1, y: 0, filter: "blur(0px)" };
   return (
     <MotionTag
       className={className}
@@ -114,7 +107,8 @@ export function Reveal({
           ? false
           : { opacity: 0, y, filter: blur ? "blur(8px)" : "blur(0px)" }
       }
-      {...(immediate ? { animate: to } : { whileInView: to, viewport: VIEW })}
+      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      viewport={VIEW}
       transition={{ duration: 1, ease: EASE, delay }}
     >
       {children}
