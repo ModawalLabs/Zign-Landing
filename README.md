@@ -28,15 +28,18 @@ navigation floats in a glass pill, the certificate is a white sheet that
 floats and tilts toward the pointer with a holographic seal and a foil
 sheen. The hero carries the brand's signature stroke cast in glass
 (`fx/glass-signature.tsx`, react-three-fiber + drei): a tube along the
-wordmark's curve with a transmission material, lit by rendered light panels
-and backed by a painted backlight so it has something to refract. It is
-desktop-only, never rendered on the server, and falls back to the flat mark
-where WebGL is missing or the renderer fails. The hero's product story plays
+wordmark's curve in clear, smoked crystal. It is lit like a product shot
+(white softbox, side strip, back rim, one low indigo fill) and bends a
+private backdrop of soft strip lights that only the glass sees, so it
+reads through lines of light and the page gets no halo or extra colour.
+Indigo appears only in its lower reflections; keep it that restrained. It
+is desktop-only, never rendered on the server, and where WebGL is missing
+or the renderer fails its poster simply stays. The hero's product story plays
 on load and loops; "How it works" is pinned and scrubbed by the scroll (one
 document drafted, prepared, negotiated and signed as the reader moves). The
-marquee hurries with scroll velocity. A one-second intro curtain draws the
-mark before the page lifts in; the CSS removes it on its own, so it can
-never block the page. All of it stands down under `prefers-reduced-motion`.
+marquee hurries with scroll velocity. A short intro curtain signs the mark
+before the page lifts in. All of it stands down under
+`prefers-reduced-motion`.
 
 **Structure.** The page is numbered like a contract. Each section opens
 with a rule that draws itself across the page carrying `§ 0n` at one end and
@@ -59,8 +62,26 @@ npm run dev                  # http://localhost:3000, or pass -p 3100
 ```
 
 If zign-v2 is also running on port 3000, start this one on another port
-(`npx next dev -p 3100`). "Start free" and "Sign in" point at
-`NEXT_PUBLIC_APP_URL`, which defaults to `http://localhost:3000`.
+(`npx next dev -p 3100`).
+
+Before publishing, set `NEXT_PUBLIC_SITE_URL` to this site's origin.
+Without it the page has no canonical URL and the sitemap has no entries.
+
+## Sign-in page
+
+"Sign in" opens `/login`; every "Start free" (and every plan's button)
+opens `/login?mode=signup`, the same page with sign-up wording. It is the
+design only: Google, Apple and email are laid out, and nothing is sent. The
+form is the one place a real auth flow plugs in later
+(`src/components/auth/sign-in.tsx`). Beside it on wide screens a pile of
+three example documents takes turns on top, every 6.5 seconds: a marriage
+certificate, a mutual NDA and an offer letter (all fictional, in `DOCS`).
+Each waits for the reader's signature; typing an address writes it on the
+one on top and holds it there, and a complete-looking address seals it.
+The turns pause under the pointer and on focus, can be stopped, can be
+chosen by hand from the numbered tabs, and never run under reduced motion. The page is `noindex`.
+Coming back to the home page from it in the same visit skips the intro
+curtain (`introHasPlayed` in `fx/intro.tsx`).
 
 | Command             | What it does                        |
 | ------------------- | ----------------------------------- |
@@ -75,7 +96,6 @@ If zign-v2 is also running on port 3000, start this one on another port
 
 | Variable                    | Purpose                                                                                   |
 | --------------------------- | ----------------------------------------------------------------------------------------- |
-| `NEXT_PUBLIC_APP_URL`       | Origin of the Zign app. Only `http(s)` origins are accepted; anything else falls back.    |
 | `NEXT_PUBLIC_SITE_URL`      | This site's public origin. Enables `metadataBase`, the canonical URL and `/sitemap.xml`.  |
 | `NEXT_PUBLIC_CONTACT_EMAIL` | Optional. When it looks like an address, "Write to us" appears in the FAQ and the footer. |
 
@@ -83,8 +103,8 @@ If zign-v2 is also running on port 3000, start this one on another port
 
 ```
 src/
-  app/            layout (fonts, metadata, nonce), page, globals.css (tokens),
-                  icon.svg, robots.ts, sitemap.ts
+  app/            layout (fonts, metadata, nonce), page, login/ (sign-in),
+                  globals.css (tokens), icon.svg, robots.ts, sitemap.ts
   proxy.ts        per-request Content-Security-Policy with a nonce
   config/site.ts  links and navigation, with URL validation
   components/
@@ -98,10 +118,57 @@ src/
                   phone-size scenes), instruments.tsx (the small drawings)
     ui/           primitives: reveal, buttons, clause eyebrow, section head,
                   signature mark, scramble, autoplay toggle, spotlight
+    auth/         the sign-in screen and the providers' marks
     providers/    Lenis smooth scroll + MotionConfig
   lib/            motion constants, beat/typing hooks, media-query hooks
 public/product/   2x screenshots of zign-v2 in its dark theme (WebP)
+public/hero/      the glass poster (a still of the live 3D scene, WebP)
 ```
+
+## Performance
+
+Measured with Lighthouse on the production build: desktop 97 to 98, mobile
+75 to 82 (run to run), with accessibility, best practices and SEO at 100 on
+both. What keeps it
+there, and should stay true:
+
+- **The first screen needs no script.** The intro curtain and the hero's
+  entrance are CSS (`.intro-*`, `.hero-*` in `globals.css`), so the page is
+  painted as soon as its HTML, CSS and fonts arrive. The lede, the largest
+  element, is painted from the first frame (dim and out of focus under the
+  curtain), so it is never held back by an animation delay.
+- **The glass is there at once and comes alive later.** A poster of it
+  (`public/hero/glass.webp`, 13 KB, desktop only through a `<picture>`
+  media source) is painted with the first frame. The live scene's code
+  (three.js, about 250 KB compressed) is fetched while the browser is idle
+  after load; the renderer starts on the reader's first move, scroll or
+  key, or after five seconds, and fades in over the poster in the same
+  pose (every motion in the scene is zero at the start and eases in, and
+  the canvas measures its box's layout size so it matches the poster even
+  mid-entrance). Under reduced motion, or without WebGL, the poster stays.
+  The scene stops drawing while off screen, three.js does not wait on
+  shader compile checks, and the light studio is built by hand rather than
+  with drei's `Environment`, which would bring HDR and EXR loaders.
+- **Re-rendering the poster.** If the glass scene changes, render a new
+  still: run the production build at 1440×900 with a device scale factor
+  of 1.5, start the glass (move the pointer), switch on reduced motion (the
+  scene draws one frame at rest), hide everything but the hero canvas,
+  capture the `.hero-glass` box on a transparent background, and encode it
+  as WebP with alpha (`sharp`, quality 80).
+- **Nothing animates out of sight.** Every `Aurora` pauses while its section
+  is off screen, and so does the marquee. The light pools are drawn with
+  eased gradient stops, not blur filters, which are expensive to paint on
+  phones.
+- **Only first-screen fonts are preloaded**: Geist and Source Serif (roman
+  and italic). Geist Mono and the signature hand load when first used.
+
+The mobile score is held back by Lighthouse's throttled estimate of LCP:
+each run starts a fresh, GPU-less Chrome whose first frame lands after the
+scripts have run, and the estimate then counts that script time. In a warm
+browser the page first paints at about 200 ms on a phone with the lede in
+that frame. The one large lever left is the display font: Source Serif's
+optical-size axis makes its two files 246 KB; without the axis they are
+99 KB, at the cost of the display cut at large sizes.
 
 ## Security
 
