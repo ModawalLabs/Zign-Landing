@@ -1,9 +1,5 @@
-/**
- * Where the page's calls to action lead. The product runs separately
- * (zign-v2), so its address comes from the environment; the default is the
- * product's local dev server. Only http(s) origins are accepted, so a
- * misconfigured value can never become a javascript: link.
- */
+/* Only http(s) origins are accepted, so a misconfigured value can never
+   become a javascript: link. */
 function safeOrigin(value: string | undefined, fallback: string) {
   if (!value) return fallback;
   try {
@@ -24,11 +20,6 @@ function safeMailto(value: string | undefined) {
     : null;
 }
 
-const appUrl = safeOrigin(
-  process.env.NEXT_PUBLIC_APP_URL,
-  "http://localhost:3000",
-);
-
 /* This site's own public origin. Empty in development, which leaves the
    sitemap empty and metadata relative. */
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
@@ -38,10 +29,11 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
 export const site = {
   name: "Zign",
   url: siteUrl,
-  appUrl,
   links: {
-    start: `${appUrl}/dashboard`,
-    signIn: `${appUrl}/dashboard`,
+    /* Every call to action opens the sign-in page; the ones that start
+       an account open it on its sign-up side. */
+    start: "/login?mode=signup",
+    signIn: "/login",
     contact: safeMailto(process.env.NEXT_PUBLIC_CONTACT_EMAIL),
   },
   nav: [

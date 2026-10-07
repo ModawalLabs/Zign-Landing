@@ -2,7 +2,7 @@ import Link from "next/link";
 
 import { cn } from "@/lib/utils";
 
-type Variant = "ink" | "paper" | "outline" | "ghost" | "ghost-night";
+type Variant = "ink" | "outline" | "ghost";
 type Size = "sm" | "md" | "lg";
 
 const base =
@@ -18,11 +18,9 @@ const sizes: Record<Size, string> = {
    drawn in hairlines and glass. */
 const variants: Record<Variant, string> = {
   ink: "key-ink bg-ink text-paper hover:bg-white",
-  paper: "key-paper border border-line bg-card text-ink hover:bg-band",
   outline:
     "border border-line bg-card/40 text-ink backdrop-blur-sm hover:border-[#3a3d47] hover:bg-card",
   ghost: "text-ink hover:bg-white/[0.06]",
-  "ghost-night": "text-night-text hover:bg-white/[0.06]",
 };
 
 export function ButtonLink({
@@ -51,8 +49,35 @@ export function ButtonLink({
   );
 }
 
+/** The same key as ButtonLink, for actions that stay on the page. */
+export function Button({
+  type = "button",
+  variant = "ink",
+  size = "md",
+  arrow = false,
+  className,
+  children,
+}: {
+  type?: "button" | "submit";
+  variant?: Variant;
+  size?: Size;
+  arrow?: boolean;
+  className?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type={type}
+      className={cn(base, sizes[size], variants[variant], className)}
+    >
+      <span>{children}</span>
+      {arrow && <Arrow />}
+    </button>
+  );
+}
+
 /** An arrow whose shaft draws out as its head travels, on hover. */
-export function Arrow({ className }: { className?: string }) {
+function Arrow({ className }: { className?: string }) {
   return (
     <svg
       viewBox="0 0 16 16"
