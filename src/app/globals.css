@@ -347,14 +347,7 @@ html.lenis body {
   }
 }
 
-/* Paper: the lines of a ruled sheet, and the dots of a layout grid. */
-.ruled {
-  background-image: repeating-linear-gradient(
-    to bottom,
-    rgb(255 255 255 / 0.05) 0 1px,
-    transparent 1px 36px
-  );
-}
+/* The dots of a layout grid. */
 .dot-grid {
   background-image: radial-gradient(
     rgb(255 255 255 / 0.085) 1px,

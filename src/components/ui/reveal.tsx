@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  motion,
-  useScroll,
-  useTransform,
-  type MotionValue,
-} from "motion/react";
-import { Fragment, useRef } from "react";
+import { motion } from "motion/react";
 
 import { EASE } from "@/lib/motion";
 import { usePrefersReducedMotion } from "@/lib/use-media";
@@ -138,65 +132,5 @@ export function RevealRule({
       viewport={VIEW}
       transition={{ duration: 1.4, ease: EASE }}
     />
-  );
-}
-
-/**
- * A paragraph that is read into being: each word comes up from a faint
- * grey as the reader scrolls past it, so the sentence keeps pace with the
- * eye rather than arriving all at once.
- */
-export function ScrollWords({
-  text,
-  className,
-  emphasis = [],
-}: {
-  text: string;
-  className?: string;
-  /** Words (exact tokens) to set in the italic serif. */
-  emphasis?: string[];
-}) {
-  const ref = useRef<HTMLParagraphElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start 0.82", "end 0.45"],
-  });
-  const words = text.split(" ");
-  return (
-    <p ref={ref} className={className}>
-      {words.map((word, i) => (
-        <Fragment key={i}>
-          <Word
-            progress={scrollYProgress}
-            range={[i / words.length, (i + 1.6) / words.length]}
-            italic={emphasis.includes(word)}
-          >
-            {word}
-          </Word>{" "}
-        </Fragment>
-      ))}
-    </p>
-  );
-}
-
-function Word({
-  children,
-  progress,
-  range,
-  italic,
-}: {
-  children: string;
-  progress: MotionValue<number>;
-  range: [number, number];
-  italic: boolean;
-}) {
-  const opacity = useTransform(progress, range, [0.14, 1]);
-  return (
-    <motion.span
-      style={{ opacity }}
-      className={italic ? "font-serif italic" : undefined}
-    >
-      {children}
-    </motion.span>
   );
 }

@@ -19,7 +19,7 @@ export function Closing() {
   return (
     <section
       aria-labelledby="closing-title"
-      className="relative isolate overflow-hidden py-24 lg:py-32"
+      className="relative isolate overflow-hidden py-20 lg:py-24"
     >
       <div aria-hidden className="absolute inset-0 -z-10">
         <Aurora strength={1.15} />
@@ -65,7 +65,7 @@ export function Closing() {
         </Reveal>
 
         {/* A sign-here line the brand's own mark signs. */}
-        <div ref={lineRef} aria-hidden className="mx-auto mt-14 max-w-[520px]">
+        <div ref={lineRef} aria-hidden className="mx-auto mt-10 max-w-[520px]">
           <div className="relative flex h-24 items-end">
             <motion.span
               className="absolute bottom-3 left-0 rounded-[4px] bg-indigo px-2 py-1 text-[10.5px] font-semibold tracking-[0.08em] text-night uppercase"

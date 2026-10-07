@@ -36,7 +36,7 @@ export function PrepareScene({ play }: { play: boolean }) {
     ],
     reduce,
   );
-  // 1 signers · 2 fields label · 3–8 fields · 9 order · 10–13 checks · 14 flag
+  // 1 signers · 2 fields label · 3–8 fields · 9 order · 10–13 checks
   return (
     <div className="flex h-full flex-col gap-4">
       <Card>
@@ -86,13 +86,7 @@ export function PrepareScene({ play }: { play: boolean }) {
       <Card className="flex-1">
         <Header
           title="Compliance checkpoint"
-          aside={
-            beat >= 14
-              ? "1 to resolve"
-              : beat >= 10
-                ? `${Math.min(beat - 9, 4)} of 5`
-                : ""
-          }
+          aside={beat >= 10 ? `${Math.min(beat - 9, 4)} of 4` : ""}
           plain
         />
         <ul className="space-y-2.5 px-4 pt-1 pb-4 text-[12.5px] sm:px-5">
@@ -114,38 +108,6 @@ export function PrepareScene({ play }: { play: boolean }) {
               </li>
             );
           })}
-          <li>
-            <motion.div
-              initial={false}
-              animate={
-                beat >= 14
-                  ? { opacity: 1, height: "auto", marginTop: 4 }
-                  : { opacity: 0, height: 0, marginTop: 0 }
-              }
-              transition={{ duration: 0.5, ease: EASE }}
-              className="overflow-hidden"
-            >
-              <div className="rounded-lg border border-pending/25 bg-pending/[0.06] p-3">
-                <p className="flex items-center gap-2 font-medium text-pending">
-                  <span className="grid size-4 place-items-center rounded-full bg-pending text-[9px] font-bold text-night">
-                    !
-                  </span>
-                  Schedule B is missing
-                </p>
-                <p className="mt-1 pl-6 text-[12px] leading-relaxed text-ink-soft">
-                  Clause 9 refers to Schedule B, which isn&rsquo;t attached.
-                </p>
-                <div className="mt-2.5 flex gap-1.5 pl-6">
-                  <span className="rounded-md bg-ink px-2.5 py-1 text-[11px] font-medium text-paper">
-                    Attach it
-                  </span>
-                  <span className="rounded-md border border-line bg-card px-2.5 py-1 text-[11px] text-ink-soft">
-                    Remove the reference
-                  </span>
-                </div>
-              </div>
-            </motion.div>
-          </li>
         </ul>
       </Card>
     </div>

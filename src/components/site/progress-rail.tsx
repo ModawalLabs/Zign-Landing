@@ -6,13 +6,12 @@ import { cn } from "@/lib/utils";
 
 const STOPS = [
   { id: "top", n: "00", label: "Start", night: false },
-  { id: "workflow", n: "02", label: "How it works", night: false },
-  { id: "copilot", n: "03", label: "Zign AI", night: true },
-  { id: "workspace", n: "04", label: "Workspace", night: false },
-  { id: "capabilities", n: "05", label: "Around the signature", night: false },
-  { id: "record", n: "06", label: "Security", night: false },
-  { id: "pricing", n: "07", label: "Pricing", night: false },
-  { id: "faq", n: "08", label: "Questions", night: false },
+  { id: "workflow", n: "01", label: "How it works", night: false },
+  { id: "copilot", n: "02", label: "Zign AI", night: true },
+  { id: "workspace", n: "03", label: "Workspace", night: false },
+  { id: "capabilities", n: "04", label: "Around the signature", night: false },
+  { id: "record", n: "05", label: "Security", night: false },
+  { id: "pricing", n: "06", label: "Pricing", night: false },
   // Not a stop of its own: over the footer the rail stands down.
   { id: "site-footer", n: "", label: "Footer", night: true },
 ];

@@ -20,9 +20,7 @@ import { EASE } from "@/lib/motion";
 import { usePrefersReducedMotion } from "@/lib/use-media";
 import { cn } from "@/lib/utils";
 
-import activity from "../../../public/product/activity.webp";
 import editor from "../../../public/product/editor.webp";
-import expiry from "../../../public/product/expiry.webp";
 import home from "../../../public/product/home.webp";
 import review from "../../../public/product/review.webp";
 
@@ -34,35 +32,21 @@ const SCREENS = [
     image: home,
     alt: "The Zign home screen: a greeting, a one-line brief of what needs attention, suggestion chips and the copilot's input bar, with agreement counts and a thirty-day horizon beneath.",
     caption:
-      "Home is a conversation. Ask what is due, upload a file or start a draft; your agreements and the next thirty days sit underneath.",
+      "Home is a conversation: ask what is due, upload a file or start a draft.",
   },
   {
     label: "Editor",
     image: editor,
     alt: "The Zign editor: an employment contract on the page with tracked suggestions, Zign AI on the left and the review panel on the right showing votes from each party.",
     caption:
-      "The editor paints the review over the paper: suggestions in each party's tone, votes and counters beside them, the copilot alongside.",
+      "Suggestions, votes and the copilot, all on the page beside the document.",
   },
   {
     label: "Review link",
     image: review,
     alt: "A counterparty's review page: the contract on the left, suggestions and comments on the right, opened from a link with comment access.",
     caption:
-      "Counterparties review from a link with the access you gave them: view, comment or edit. No account, nothing to download.",
-  },
-  {
-    label: "Expiring",
-    image: expiry,
-    alt: "The expiring page: tracked expiry dates grouped into overdue, next seven days and next thirty days, each inferred from the document.",
-    caption:
-      "Zign AI reads term and renewal dates out of every document, and tells you before they pass rather than after.",
-  },
-  {
-    label: "Activity",
-    image: activity,
-    alt: "The activity page: totals across documents and a radar map of events by kind, with drafting, signers, signing, notices, checks and copilot.",
-    caption:
-      "Every event on every document, mapped by kind, so you can see where the work is actually happening.",
+      "Counterparties review from a link with the access you gave them. No account needed.",
   },
 ] as const;
 
@@ -109,7 +93,7 @@ export function Workspace() {
       id="workspace"
       ref={sectionRef}
       aria-labelledby="workspace-title"
-      className="relative isolate scroll-mt-16 py-16 lg:py-20"
+      className="relative isolate scroll-mt-16 py-14 lg:py-16"
     >
       {/* Faint weather under the frame, so the dark is never dead. */}
       <div
@@ -121,14 +105,14 @@ export function Workspace() {
       <Container>
         <SectionHead
           id="workspace-title"
-          n="4"
+          n="3"
           label="The workspace"
           title="One quiet place for every agreement."
-          lede="The product's own screens, as your team will use them. Ink and paper, one accent, nothing competing with the document."
+          lede="The product's own screens, exactly as your team will use them."
         />
 
         <div
-          className="mt-10 md:mt-12"
+          className="mt-8 md:mt-10"
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
           onFocus={() => setPaused(true)}
@@ -194,7 +178,7 @@ export function Workspace() {
                 id="screen-panel"
                 role="tabpanel"
                 aria-labelledby={`screen-tab-${active}`}
-                className="relative aspect-[16/10] overflow-hidden rounded-[10px] border border-line-soft bg-paper sm:rounded-[14px]"
+                className="relative aspect-[16/9] overflow-hidden rounded-[10px] border border-line-soft bg-paper sm:rounded-[14px]"
               >
                 <AnimatePresence initial={false}>
                   <motion.div

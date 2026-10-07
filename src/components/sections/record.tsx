@@ -16,11 +16,7 @@ import { EASE } from "@/lib/motion";
 const GUARANTEES = [
   {
     title: "Consent before anything",
-    body: "Every signer agrees to sign electronically before they see a page, and that agreement is recorded.",
-  },
-  {
-    title: "Identity, when it matters",
-    body: "Ask any signer to verify who they are; their signature is not accepted until they have.",
+    body: "Every signer agrees to sign electronically before they see a page, and it is recorded.",
   },
   {
     title: "Sealed on completion",
@@ -30,16 +26,10 @@ const GUARANTEES = [
     title: "Checkable by anyone",
     body: "Verify recomputes the hash and the seal, so a changed copy cannot pass for the original.",
   },
-  {
-    title: "Links that lapse",
-    body: "Signing links carry an expiry and stop working after it. Review links open with only the access you chose.",
-  },
 ];
 
 const TRAIL = [
   ["14:01", "Sent for signing by Maya Ellison"],
-  ["14:01", "Hannah Brooks consented to sign electronically"],
-  ["14:02", "Hannah Brooks verified her identity"],
   ["14:02", "Signed by Hannah Brooks"],
   ["14:06", "Signed by Maya Ellison"],
   ["14:06", "Sealed and certificate issued"],
@@ -50,7 +40,7 @@ export function Record() {
     <section
       id="record"
       aria-labelledby="record-title"
-      className="relative isolate scroll-mt-16 py-16 lg:py-20"
+      className="relative isolate scroll-mt-16 py-14 lg:py-16"
     >
       {/* The light the certificate floats in. */}
       <div
@@ -62,10 +52,10 @@ export function Record() {
       <Container>
         <SectionHead
           id="record-title"
-          n="6"
+          n="5"
           label="Security and evidence"
           title="Every signature leaves a record."
-          lede="An agreement is only as good as your ability to prove it. Every step of a signing is evidenced, sealed and checkable long after the fact."
+          lede="Every step is evidenced, sealed and checkable long after the fact."
         />
 
         <div className="mt-10 grid gap-12 md:mt-12 lg:grid-cols-12 lg:gap-10">

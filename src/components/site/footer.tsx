@@ -16,7 +16,6 @@ export function Footer() {
       links: [
         { label: "Start free", href: site.links.start },
         { label: "Sign in", href: site.links.signIn },
-        { label: "Questions", href: "#faq" },
         ...(site.links.contact
           ? [{ label: "Contact", href: site.links.contact }]
           : []),
@@ -89,7 +88,7 @@ export function Footer() {
       {/* The name, set large and cut by the page's edge, lit from above. */}
       <p
         aria-hidden
-        className="pointer-events-none -mb-[0.24em] bg-gradient-to-b from-white/[0.1] to-white/0 bg-clip-text text-center font-serif text-[clamp(6rem,22vw,20rem)] leading-[0.8] font-semibold tracking-[-0.05em] text-transparent select-none"
+        className="pointer-events-none -mb-[0.24em] bg-gradient-to-b from-white/[0.1] to-white/0 bg-clip-text text-center font-serif text-[clamp(5rem,16vw,15rem)] leading-[0.8] font-semibold tracking-[-0.05em] text-transparent select-none"
       >
         Zign
       </p>

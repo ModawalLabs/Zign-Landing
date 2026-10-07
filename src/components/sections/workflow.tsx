@@ -32,46 +32,46 @@ const CHAPTERS = [
   {
     kicker: "Draft",
     title: "Start with a file, or a sentence.",
-    body: "Upload a contract you already have, or describe the one you need. Zign AI writes the first draft on the page, in plain language, ready to edit like any document.",
+    body: "Upload a contract or describe the one you need. Zign AI writes the first draft, ready to edit.",
     Scene: DraftScene,
   },
   {
     kicker: "Prepare",
     title: "Fields find their own places.",
-    body: "Smart setup reads the document, works out who signs and in what order, and places every signature, name and date field in that party's tone. A compliance checkpoint catches what is missing before anyone else sees it.",
+    body: "Zign works out who signs and in what order, places every field, and checks for anything missing.",
     Scene: PrepareScene,
   },
   {
     kicker: "Negotiate",
     title: "Redlines in the open, not in an inbox.",
-    body: "Share a review link as a viewer, commenter or editor. Suggestions land on the page in each party's tone; everyone votes, anyone can counter, and you decide what is applied.",
+    body: "Share a review link. Suggestions land on the page, everyone votes, and you decide what is applied.",
     Scene: NegotiateScene,
   },
   {
     kicker: "Sign",
     title: "A signature that holds up.",
-    body: "Signers consent, verify their identity when you ask them to, and sign from any device without an account. The finished PDF is sealed with a certificate anyone can check.",
+    body: "Signers sign from any device, no account needed. The finished PDF is sealed with a certificate anyone can check.",
     Scene: SignScene,
   },
 ] as const;
 
 /** How far the reader scrolls through the pinned story, in viewports. */
-const TRACK_VH = 320;
+const TRACK_VH = 200;
 
 export function Workflow() {
   return (
     <section
       id="workflow"
       aria-labelledby="workflow-title"
-      className="relative scroll-mt-16 py-16 lg:py-20"
+      className="relative scroll-mt-16 py-14 lg:py-16"
     >
       <Container>
         <SectionHead
           id="workflow-title"
-          n="2"
+          n="1"
           label="How it works"
           title="From first draft to final signature."
-          lede="Four steps, one document, nothing lost between inboxes. Scroll, and the agreement is drafted, prepared, negotiated and signed in front of you."
+          lede="One agreement, drafted, prepared, negotiated and signed as you scroll."
         />
       </Container>
       <SheetStory />
@@ -117,21 +117,22 @@ function SheetStory() {
       className="relative mt-6 hidden lg:block"
       style={{ height: `${TRACK_VH}vh` }}
     >
-      {/* Where each chapter sits on the track, for links and the probes. */}
+      {/* Where each chapter sits on the track, for links and the probes:
+          centred in the viewport, each lands mid-chapter at any track length. */}
       {CHAPTERS.map((ch, i) => (
         <div
           key={ch.kicker}
           id={`chapter-${i}`}
           aria-hidden
           className="absolute left-0 h-px w-px"
-          style={{ top: `${(i + 0.5) * 25}%` }}
+          style={{ top: `calc(50vh + (100% - 100vh) * ${(i + 0.5) / 4})` }}
         />
       ))}
 
       <div className="sticky top-0 flex h-screen items-center overflow-hidden">
         <Container className="grid w-full grid-cols-12 items-center gap-x-10">
           <div className="col-span-4">
-            <div className="relative min-h-[270px]">
+            <div className="relative min-h-[220px]">
               <AnimatePresence mode="wait">
                 <motion.article
                   key={chapter}
@@ -721,7 +722,7 @@ function Floater({
 
 function ChaptersStacked() {
   return (
-    <div className="mt-12 space-y-16 lg:hidden">
+    <div className="mt-10 space-y-12 lg:hidden">
       {CHAPTERS.map((c, i) => (
         <StackedChapter key={c.kicker} chapter={c} index={i} />
       ))}
@@ -757,7 +758,7 @@ function StackedChapter({
       <Reveal delay={0.1}>
         <div
           ref={ref}
-          className="glass-frame relative mt-8 h-[520px] overflow-hidden rounded-[18px] p-4 sm:h-[560px] sm:p-6"
+          className="glass-frame relative mt-6 h-[440px] overflow-hidden rounded-[18px] p-4 sm:h-[500px] sm:p-6"
         >
           <div
             aria-hidden

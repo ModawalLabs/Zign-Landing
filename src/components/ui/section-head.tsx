@@ -47,7 +47,7 @@ export function SectionHead({
           <h2
             id={id}
             className={cn(
-              "mt-8 max-w-[22ch] text-display text-[clamp(2rem,3.5vw,2.95rem)] leading-[1.06] tracking-[-0.026em] text-balance md:mt-10",
+              "mt-6 max-w-[22ch] text-display text-[clamp(2rem,3.5vw,2.95rem)] leading-[1.06] tracking-[-0.026em] text-balance md:mt-8",
               night ? "text-night-text" : "text-ink",
             )}
           >
@@ -58,7 +58,7 @@ export function SectionHead({
           <Reveal delay={0.16}>
             <p
               className={cn(
-                "mt-5 max-w-[56ch] text-lede text-pretty",
+                "mt-4 max-w-[56ch] text-lede text-pretty",
                 night ? "text-night-muted" : "text-muted",
               )}
             >

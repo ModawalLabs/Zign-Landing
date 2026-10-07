@@ -13,7 +13,6 @@ import { useEffect, useRef, useState } from "react";
 import { Aurora } from "@/components/fx/aurora";
 import { AutoplayToggle } from "@/components/ui/autoplay-toggle";
 import { Container } from "@/components/ui/container";
-import { Reveal } from "@/components/ui/reveal";
 import { SectionHead } from "@/components/ui/section-head";
 import { SignatureMark } from "@/components/ui/signature-mark";
 import { EASE } from "@/lib/motion";
@@ -97,7 +96,7 @@ export function Copilot() {
     <section
       id="copilot"
       aria-labelledby="copilot-title"
-      className="grain relative isolate scroll-mt-16 overflow-hidden bg-night py-16 text-night-text lg:py-24"
+      className="grain relative isolate scroll-mt-16 overflow-hidden bg-night py-14 text-night-text lg:py-16"
       onPointerMove={reduce ? undefined : onGlowMove}
       onPointerLeave={() => setLit(false)}
     >
@@ -113,16 +112,16 @@ export function Copilot() {
       <Container>
         <SectionHead
           id="copilot-title"
-          n="3"
+          n="2"
           label="Zign AI"
           tone="night"
           title="Ask the agreement anything."
-          lede="Zign AI reads the whole agreement before you do. It explains, rewrites and checks on the page itself, and answers signers' questions as they sign."
+          lede="Zign AI reads the whole agreement, then explains, rewrites and checks it on the page."
         />
 
         <div
           ref={ref}
-          className="mt-10 grid gap-10 md:mt-12 lg:grid-cols-12 lg:gap-12"
+          className="mt-8 grid gap-10 md:mt-10 lg:grid-cols-12 lg:gap-12"
         >
           <div
             className="lg:col-span-4"
@@ -192,19 +191,6 @@ export function Copilot() {
                 className="mt-3 -ml-2.5"
               />
             )}
-
-            <Reveal delay={0.2} className="mt-8">
-              <div className="border-t border-night-line pt-5">
-                <p className="text-eyebrow text-indigo-lift">Copilot memory</p>
-                <p className="mt-3 text-[15px] leading-[1.6] text-night-text/90">
-                  It remembers what you tell it. Halden&rsquo;s contracts
-                  contact is Hannah Brooks, and you countersign after her.
-                </p>
-                <p className="mt-3 text-[13px] text-night-muted">
-                  Pin a fact, or have it forgotten, from settings.
-                </p>
-              </div>
-            </Reveal>
           </div>
 
           <div className="lg:col-span-8">
