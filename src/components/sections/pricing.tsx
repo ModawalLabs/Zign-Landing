@@ -71,15 +71,17 @@ const PLANS: Plan[] = [
 ];
 
 /**
- * One surface, three columns divided by hairlines: no boxes. The plan the
- * page recommends stands in a pool of light and carries the white key.
+ * One object, not three boxes: a single pane of glass lifted off the night,
+ * with the plans as columns inside it. The plan the page recommends is an
+ * inset pane within it, tinted and edged in indigo, carrying the white key.
+ * Names are set as labels, ticks are bare, and nothing else is decorated.
  */
 export function Pricing() {
   return (
     <section
       id="pricing"
       aria-labelledby="pricing-title"
-      className="grain relative isolate scroll-mt-16 overflow-hidden bg-night py-16 lg:py-20"
+      className="grain relative isolate scroll-mt-16 overflow-hidden bg-night py-14 lg:py-16"
     >
       <div aria-hidden className="pointer-events-none absolute inset-0 -z-10">
         <Aurora strength={0.5} />
@@ -90,103 +92,123 @@ export function Pricing() {
       <Container>
         <SectionHead
           id="pricing-title"
-          n="7"
+          n="6"
           label="Pricing"
           tone="night"
           title="Plans that grow with the paperwork."
-          lede="Start free for thirty days. Then buy credits as you need them, or subscribe by the week. One credit signs one document."
+          lede="Start free for 30 days, then pay as you go or by the week."
         />
 
-        <div className="mt-10 grid divide-y divide-night-line border-y border-night-line md:mt-12 lg:grid-cols-3 lg:divide-x lg:divide-y-0">
-          {PLANS.map((plan, i) => (
-            <Reveal key={plan.slug} delay={i * 0.08} className="relative">
-              <article
-                aria-labelledby={`plan-${plan.slug}`}
-                className="relative flex h-full flex-col py-9 lg:px-9 lg:py-10"
-              >
-                {plan.featured && (
-                  <span
-                    aria-hidden
-                    className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_80%_70%_at_50%_0%,rgb(138_151_240/0.16),transparent)]"
-                  />
-                )}
-
-                <div className="flex h-6 items-center justify-between">
-                  <h3
-                    id={`plan-${plan.slug}`}
-                    className="text-[15px] font-semibold tracking-[-0.01em] text-night-text"
-                  >
-                    {plan.name}
-                  </h3>
-                  {plan.featured && (
-                    <span className="rounded-full border border-indigo-lift/30 bg-indigo-lift/10 px-2 py-0.5 text-[11px] font-medium text-indigo-lift">
-                      Recommended
-                    </span>
+        <Reveal className="mt-8 md:mt-10">
+          <div className="rounded-[26px] border border-white/[0.08] bg-[linear-gradient(180deg,rgb(255_255_255/0.045),rgb(255_255_255/0.012))] p-2 shadow-[inset_0_1px_0_rgb(255_255_255/0.07),0_50px_120px_-50px_rgb(0_0_0/0.95)]">
+            <div className="grid lg:grid-cols-3">
+              {PLANS.map((plan, i) => (
+                <article
+                  key={plan.slug}
+                  aria-labelledby={`plan-${plan.slug}`}
+                  className={cn(
+                    "relative isolate flex flex-col px-6 py-7 lg:px-8 lg:py-8",
+                    plan.featured
+                      ? "mt-2 overflow-hidden rounded-[20px] bg-[linear-gradient(180deg,rgb(138_151_240/0.15),rgb(138_151_240/0.04)_60%,rgb(138_151_240/0.02))] shadow-[inset_0_0_0_1px_rgb(169_179_246/0.22),inset_0_1px_0_rgb(255_255_255/0.1),0_24px_60px_-28px_rgb(56_75_199/0.65)] lg:mt-0"
+                      : "border-b border-white/[0.06] lg:border-b-0",
+                    i === 0 && "lg:border-r lg:border-white/[0.06]",
                   )}
-                </div>
+                >
+                  {plan.featured && (
+                    <>
+                      <span
+                        aria-hidden
+                        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(ellipse_80%_60%_at_50%_0%,rgb(138_151_240/0.16),transparent)]"
+                      />
+                      <span
+                        aria-hidden
+                        className="pointer-events-none absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-indigo-lift/60 to-transparent"
+                      />
+                    </>
+                  )}
 
-                <p className="mt-7 flex items-baseline gap-1.5 text-night-text">
-                  <span
-                    className="text-display text-[3.25rem] leading-none tracking-[-0.035em]"
-                    data-tabular
-                  >
-                    {plan.price}
-                  </span>
-                  <span className="text-[14px] text-night-muted">
-                    / {plan.period}
-                  </span>
-                </p>
+                  <div className="flex h-5 items-center justify-between gap-3">
+                    <h3
+                      id={`plan-${plan.slug}`}
+                      className={cn(
+                        "text-eyebrow",
+                        plan.featured ? "text-indigo-lift" : "text-night-muted",
+                      )}
+                    >
+                      {plan.name}
+                    </h3>
+                    {plan.featured && (
+                      <span className="rounded-full bg-indigo-lift/12 px-2 py-0.5 font-mono text-[10px] tracking-[0.08em] text-indigo-lift uppercase">
+                        Recommended
+                      </span>
+                    )}
+                  </div>
 
-                <div className="mt-3 lg:min-h-[3.4rem]">
-                  <p className="text-[15px] leading-[1.55] text-night-muted">
-                    {plan.description}
-                  </p>
-                  {plan.note && (
-                    <p
-                      className="mt-1 text-[12px] text-night-muted/80"
+                  <p className="mt-6 flex items-baseline gap-2 text-night-text">
+                    <span
+                      className="text-display text-[3.5rem] leading-none tracking-[-0.035em]"
                       data-tabular
                     >
-                      {plan.note}
+                      {plan.price}
+                    </span>
+                    <span className="font-mono text-[12px] text-night-muted">
+                      / {plan.period}
+                    </span>
+                  </p>
+
+                  <div className="mt-3 lg:min-h-[3.2rem]">
+                    <p className="text-[14.5px] leading-[1.55] text-night-muted">
+                      {plan.description}
                     </p>
-                  )}
-                </div>
-
-                <ul className="mt-7 space-y-3 text-[15px]">
-                  {plan.features.map((f) => (
-                    <li key={f} className="flex items-start gap-2.5">
-                      <span
-                        className={cn(
-                          "mt-[3px] grid size-4 shrink-0 place-items-center rounded-full",
-                          plan.featured
-                            ? "bg-indigo-lift/20 text-indigo-lift"
-                            : "bg-white/[0.07] text-night-muted",
-                        )}
+                    {plan.note && (
+                      <p
+                        className="mt-1 text-[12px] text-night-muted/80"
+                        data-tabular
                       >
-                        <Tick className="size-2.5" />
-                      </span>
-                      <span className="text-night-text/90">{f}</span>
-                    </li>
-                  ))}
-                </ul>
+                        {plan.note}
+                      </p>
+                    )}
+                  </div>
 
-                <div className="mt-auto pt-9">
-                  <ButtonLink
-                    href={site.links.start}
-                    variant={plan.featured ? "ink" : "outline"}
-                    arrow
-                    className="w-full"
-                  >
-                    {plan.cta}
-                  </ButtonLink>
-                </div>
-              </article>
-            </Reveal>
-          ))}
-        </div>
+                  <span
+                    aria-hidden
+                    className={cn(
+                      "mt-6 h-px",
+                      plan.featured ? "bg-indigo-lift/15" : "bg-white/[0.06]",
+                    )}
+                  />
 
-        <p className="mt-5 text-[13px] text-night-muted/80">
-          Prices in US dollars, before any applicable tax.
-        </p>
+                  <ul className="mt-6 space-y-3 text-[14.5px]">
+                    {plan.features.map((f) => (
+                      <li key={f} className="flex items-start gap-3">
+                        <Tick
+                          className={cn(
+                            "mt-[5px] size-3 shrink-0",
+                            plan.featured
+                              ? "text-indigo-lift"
+                              : "text-night-muted",
+                          )}
+                        />
+                        <span className="text-night-text/90">{f}</span>
+                      </li>
+                    ))}
+                  </ul>
+
+                  <div className="mt-auto pt-8">
+                    <ButtonLink
+                      href={site.links.start}
+                      variant={plan.featured ? "ink" : "outline"}
+                      arrow
+                      className="w-full"
+                    >
+                      {plan.cta}
+                    </ButtonLink>
+                  </div>
+                </article>
+              ))}
+            </div>
+          </div>
+        </Reveal>
       </Container>
     </section>
   );
