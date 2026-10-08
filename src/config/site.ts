@@ -27,7 +27,6 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL
   : "";
 
 export const site = {
-  name: "Zign",
   url: siteUrl,
   links: {
     /* Every call to action opens the sign-in page; the ones that start

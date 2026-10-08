@@ -54,10 +54,6 @@
   --color-pending-ink: #a0631c;
   --color-pending-lift: #d69650;
 
-  /* Light: the neighbours indigo borrows for its weather */
-  --color-violet: #6b5ce7;
-  --color-sky: #7fb0ff;
-
   --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
   --font-serif: var(--font-serif-display), ui-serif, Georgia, serif;
   --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
@@ -539,10 +535,6 @@ html.lenis body {
 .hero-fade {
   animation: hero-fade 1s var(--ease-settle) both;
 }
-.hero-lift {
-  opacity: 0;
-  animation: hero-lift 1.3s var(--ease-settle) forwards;
-}
 /* A block that settles into place on arrival (the product page's header,
    the sign-in page). */
 .rise-in {
@@ -563,16 +555,6 @@ html.lenis body {
     opacity: 1;
     transform: none;
     filter: none;
-  }
-}
-@keyframes hero-lift {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 48px, 0);
-  }
-  to {
-    opacity: 1;
-    transform: none;
   }
 }
 @keyframes rise-in {
