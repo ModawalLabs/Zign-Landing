@@ -62,35 +62,13 @@ export function SignIn({ mode }: { mode: SignInMode }) {
           <Aurora strength={0.55} />
         </div>
 
-        <header className="flex items-center justify-between">
+        <header className="flex items-center">
           <Link
             href="/"
             aria-label="Zign, home"
             className="-ml-1 rounded-full px-1 py-1"
           >
             <Wordmark />
-          </Link>
-          <Link
-            href="/"
-            className="group inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-[13.5px] text-muted transition-colors duration-300 hover:bg-white/[0.06] hover:text-ink"
-          >
-            <svg
-              viewBox="0 0 16 16"
-              width="12"
-              height="12"
-              fill="none"
-              aria-hidden
-              className="transition-transform duration-300 ease-(--ease-settle) group-hover:-translate-x-0.5"
-            >
-              <path
-                d="M13 8H3m0 0 4.5-4.5M3 8l4.5 4.5"
-                stroke="currentColor"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-            Back to site
           </Link>
         </header>
 
@@ -183,10 +161,7 @@ export function SignIn({ mode }: { mode: SignInMode }) {
         </main>
 
         <footer className="flex flex-col gap-2 border-t border-line pt-5 text-[12.5px] leading-[1.5] text-subtle sm:flex-row sm:items-center sm:justify-between sm:gap-8">
-          <p>
-            Signing something you were sent? Open the link in your email;
-            signers never need an account.
-          </p>
+          <p>Signers never need an account.</p>
           <p className="shrink-0">&copy; {year} Zign</p>
         </footer>
       </div>
@@ -444,7 +419,7 @@ function Desk({ progress, sealed }: { progress: number; sealed: boolean }) {
           <p className="text-display text-[2.1rem] leading-[1.02] tracking-[-0.03em] text-night-text">
             Agreements,
             <br />
-            <em className="text-ink-sweep font-serif italic">settled.</em>
+            <em className="text-zign not-italic">settled.</em>
           </p>
           <p className="pb-1.5 text-eyebrow text-night-muted">
             The agreement copilot
