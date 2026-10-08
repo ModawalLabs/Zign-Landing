@@ -756,6 +756,90 @@ html.lenis body {
   animation-play-state: paused;
 }
 
+/* ── Zign AI ──────────────────────────────────────────────────────────── */
+
+/* The prompt's edge, lit while Zign AI listens or works: a thin ring of
+   the sky's colours turning round the bar, with a soft spill of the same
+   light around it. The spill sits behind the bar, so only its edge glows. */
+.ai-edge::before,
+.ai-edge::after {
+  content: "";
+  position: absolute;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  background: conic-gradient(
+    from var(--spin),
+    #3a35cc,
+    #6a44e8,
+    #c75a86,
+    #7fb0ff,
+    #6a44e8,
+    #3a35cc
+  );
+  transition: opacity 600ms var(--ease-settle);
+  animation: spin-border 5s linear infinite;
+}
+.ai-edge::before {
+  inset: 0;
+  padding: 1.5px;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box exclude,
+    linear-gradient(#000 0 0);
+}
+.ai-edge::after {
+  inset: -5px;
+  z-index: -1;
+  filter: blur(16px);
+}
+.ai-edge[data-on]::before {
+  opacity: 1;
+}
+.ai-edge[data-on]::after {
+  opacity: 0.4;
+}
+.ai-edge[data-busy]::before {
+  opacity: 0.7;
+}
+.ai-edge[data-busy]::after {
+  opacity: 0.55;
+}
+.ai-edge[data-still]::before,
+.ai-edge[data-still]::after {
+  animation-play-state: paused;
+}
+
+/* Words Zign AI shows while it works, with a light passing along them.
+   The resting colour alone reads at 4.5:1 on the tile. */
+.think {
+  color: #8b8fa0;
+  background: linear-gradient(
+      90deg,
+      #8b8fa0 0%,
+      #8b8fa0 38%,
+      #eceef4 50%,
+      #8b8fa0 62%,
+      #8b8fa0 100%
+    )
+    0 0 / 250% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: think-sweep 1.6s linear infinite;
+}
+@keyframes think-sweep {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: 0% 0;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
