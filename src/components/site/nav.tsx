@@ -7,9 +7,9 @@ import {
   useScroll,
 } from "motion/react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 
-import { introHasPlayed } from "@/components/fx/intro";
 import { useLenis } from "@/components/providers/smooth-scroll";
 import { ButtonLink } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
@@ -19,18 +19,44 @@ import { EASE } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 /**
+ * Where a nav link should point from the page the reader is on. On the
+ * product page its own sections are same-page anchors (so the scroll
+ * glides there); from anywhere else they are links to that page.
+ */
+function useTarget() {
+  const pathname = usePathname();
+  return (href: string) => {
+    if (pathname !== "/product") return href;
+    if (href === "/product") return "#overview";
+    return href.startsWith("/product#") ? href.slice("/product".length) : href;
+  };
+}
+
+/** A same-page anchor stays a plain link; anything else is a route. */
+function NavLink({
+  href,
+  ...props
+}: Omit<React.ComponentProps<"a">, "href"> & { href: string }) {
+  return href.startsWith("#") ? (
+    <a href={href} {...props} />
+  ) : (
+    <Link href={href} {...props} />
+  );
+}
+
+/**
  * The navigation floats in a pill of glass. It frosts further once the
  * page moves, steps aside while the reader is heading down, and returns
- * the moment they turn back.
+ * the moment they turn back. It is shared by the home and product pages.
  */
 export function Nav() {
   const { scrollY } = useScroll();
+  const pathname = usePathname();
+  const target = useTarget();
   const [raised, setRaised] = useState(false);
   const [hidden, setHidden] = useState(false);
   const [hovered, setHovered] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
-  /* The pill arrives with the curtain, once per visit. */
-  const [enter] = useState(() => !introHasPlayed());
 
   useMotionValueEvent(scrollY, "change", (y) => {
     const previous = scrollY.getPrevious() ?? 0;
@@ -53,17 +79,16 @@ export function Nav() {
         <div
           className={cn(
             "glass-pill pointer-events-auto flex items-center gap-1 rounded-full py-1.5 pr-1.5 pl-2 transition-[background-color] duration-500 ease-(--ease-settle)",
-            enter && "nav-in",
             raised || open ? "bg-card/85" : "bg-card/60",
           )}
         >
-          <Link
-            href="#top"
-            aria-label="Zign, back to the top"
+          <NavLink
+            href={pathname === "/" ? "#top" : "/"}
+            aria-label="Zign, home"
             className="rounded-full px-2.5 py-1"
           >
             <Wordmark draw />
-          </Link>
+          </NavLink>
 
           <nav aria-label="Primary" className="hidden lg:block">
             <ul
@@ -72,12 +97,17 @@ export function Nav() {
             >
               {site.nav.map((item) => (
                 <li key={item.href}>
-                  <a
-                    href={item.href}
+                  <NavLink
+                    href={target(item.href)}
+                    aria-current={
+                      item.href === "/product" && pathname === "/product"
+                        ? "page"
+                        : undefined
+                    }
                     onMouseEnter={() => setHovered(item.href)}
                     onFocus={() => setHovered(item.href)}
                     onBlur={() => setHovered(null)}
-                    className="relative block rounded-full px-3 py-1.5 text-[13.5px] text-muted transition-colors duration-300 hover:text-ink"
+                    className="relative block rounded-full px-3 py-1.5 text-[13.5px] text-muted transition-colors duration-300 hover:text-ink aria-[current=page]:text-ink"
                   >
                     {hovered === item.href && (
                       <motion.span
@@ -91,7 +121,7 @@ export function Nav() {
                       />
                     )}
                     {item.label}
-                  </a>
+                  </NavLink>
                 </li>
               ))}
             </ul>
@@ -160,6 +190,7 @@ function MenuButton({
 
 function MobileMenu({ onClose }: { onClose: () => void }) {
   const lenis = useLenis();
+  const target = useTarget();
   const panelRef = useRef<HTMLDivElement>(null);
   const titleId = useId();
 
@@ -216,8 +247,8 @@ function MobileMenu({ onClose }: { onClose: () => void }) {
               transition={{ duration: 0.6, ease: EASE, delay: 0.05 + i * 0.05 }}
               className="border-b border-line"
             >
-              <a
-                href={item.href}
+              <NavLink
+                href={target(item.href)}
                 onClick={close}
                 className="flex items-baseline justify-between py-5"
               >
@@ -228,7 +259,7 @@ function MobileMenu({ onClose }: { onClose: () => void }) {
                 >
                   0{i + 1}
                 </span>
-              </a>
+              </NavLink>
             </motion.li>
           ))}
         </ul>

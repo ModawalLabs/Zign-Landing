@@ -37,7 +37,7 @@ export function Capabilities() {
     <section
       id="capabilities"
       aria-labelledby="capabilities-title"
-      className="relative py-14 lg:py-16"
+      className="relative scroll-mt-16 py-14 lg:py-16"
     >
       <Container>
         <SectionHead

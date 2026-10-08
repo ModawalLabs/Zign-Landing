@@ -1,15 +1,23 @@
+import Link from "next/link";
+
 import { Aurora } from "@/components/fx/aurora";
 import { ButtonLink } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { Wordmark } from "@/components/ui/signature-mark";
 import { site } from "@/config/site";
 
+const FOOTER_LINK =
+  "text-[15px] text-night-text/85 transition-colors hover:text-white";
+
 export function Footer() {
   const year = new Date().getFullYear();
   const columns = [
     {
       title: "Product",
-      links: site.nav.map((n) => ({ label: n.label, href: n.href })),
+      links: site.nav.map((n) => ({
+        label: n.href === "/product" ? "Overview" : n.label,
+        href: n.href,
+      })),
     },
     {
       title: "Get started",
@@ -65,12 +73,16 @@ export function Footer() {
                 <ul className="mt-5 space-y-3">
                   {col.links.map((l) => (
                     <li key={l.label}>
-                      <a
-                        href={l.href}
-                        className="text-[15px] text-night-text/85 transition-colors hover:text-white"
-                      >
-                        {l.label}
-                      </a>
+                      {/* Pages are routes; the contact address is a mailto. */}
+                      {l.href.startsWith("/") ? (
+                        <Link href={l.href} className={FOOTER_LINK}>
+                          {l.label}
+                        </Link>
+                      ) : (
+                        <a href={l.href} className={FOOTER_LINK}>
+                          {l.label}
+                        </a>
+                      )}
                     </li>
                   ))}
                 </ul>
@@ -88,7 +100,7 @@ export function Footer() {
       {/* The name, set large and cut by the page's edge, lit from above. */}
       <p
         aria-hidden
-        className="pointer-events-none -mb-[0.24em] bg-gradient-to-b from-white/[0.1] to-white/0 bg-clip-text text-center font-serif text-[clamp(5rem,16vw,15rem)] leading-[0.8] font-semibold tracking-[-0.05em] text-transparent select-none"
+        className="pointer-events-none -mb-[0.24em] bg-gradient-to-b from-white/[0.1] to-white/0 bg-clip-text text-center font-sans text-[clamp(5rem,16vw,15rem)] leading-[0.8] font-semibold tracking-[-0.05em] text-transparent select-none"
       >
         Zign
       </p>

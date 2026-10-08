@@ -12,7 +12,15 @@ import { SignatureMark } from "@/components/ui/signature-mark";
 import { site } from "@/config/site";
 import { EASE } from "@/lib/motion";
 
-export function Closing() {
+/**
+ * The call to action every marketing page ends on. The second key points
+ * wherever the reader should go next from this page.
+ */
+export function Closing({
+  secondary,
+}: {
+  secondary: { href: string; label: string };
+}) {
   const lineRef = useRef<HTMLDivElement>(null);
   const signed = useInView(lineRef, { once: true, amount: 0.8 });
 
@@ -36,7 +44,7 @@ export function Closing() {
           id="closing-title"
           lines={[
             "Your next agreement,",
-            <em key="em" className="text-ink-sweep font-serif italic">
+            <em key="em" className="text-zign not-italic">
               already settled.
             </em>,
           ]}
@@ -58,8 +66,8 @@ export function Closing() {
             </ButtonLink>
           </Magnetic>
           <Magnetic>
-            <ButtonLink href="#pricing" size="lg" variant="outline">
-              See pricing
+            <ButtonLink href={secondary.href} size="lg" variant="outline">
+              {secondary.label}
             </ButtonLink>
           </Magnetic>
         </Reveal>

@@ -36,11 +36,24 @@ export const site = {
     signIn: "/login",
     contact: safeMailto(process.env.NEXT_PUBLIC_CONTACT_EMAIL),
   },
+  /* The top navigation. The home page is the landing page; everything
+     else lives on the product page, so the links lead into it. */
   nav: [
-    { label: "How it works", href: "#workflow" },
-    { label: "Copilot", href: "#copilot" },
-    { label: "Workspace", href: "#workspace" },
-    { label: "Security", href: "#record" },
-    { label: "Pricing", href: "#pricing" },
+    { label: "Product", href: "/product" },
+    { label: "Zign AI", href: "/product#copilot" },
+    { label: "Security", href: "/product#record" },
+    { label: "Pricing", href: "/product#pricing" },
   ],
 } as const;
+
+/* The product page's sections, in order. Its "on this page" list, the
+   progress rail and the footer all read from here, so a section is added
+   or renamed in one place. */
+export const productSections = [
+  { id: "workflow", n: "01", label: "How it works", night: false },
+  { id: "copilot", n: "02", label: "Zign AI", night: true },
+  { id: "workspace", n: "03", label: "Workspace", night: false },
+  { id: "capabilities", n: "04", label: "Around the signature", night: false },
+  { id: "record", n: "05", label: "Security", night: false },
+  { id: "pricing", n: "06", label: "Pricing", night: false },
+] as const;

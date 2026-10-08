@@ -2,27 +2,25 @@
 
 import { useEffect, useState } from "react";
 
+import { productSections } from "@/config/site";
 import { cn } from "@/lib/utils";
 
 const STOPS = [
-  { id: "top", n: "00", label: "Start", night: false },
-  { id: "workflow", n: "01", label: "How it works", night: false },
-  { id: "copilot", n: "02", label: "Zign AI", night: true },
-  { id: "workspace", n: "03", label: "Workspace", night: false },
-  { id: "capabilities", n: "04", label: "Around the signature", night: false },
-  { id: "record", n: "05", label: "Security", night: false },
-  { id: "pricing", n: "06", label: "Pricing", night: false },
-  // Not a stop of its own: over the footer the rail stands down.
+  // Not stops of their own: over the page's header and the footer the
+  // rail stands down.
+  { id: "overview", n: "", label: "Overview", night: false },
+  ...productSections,
   { id: "site-footer", n: "", label: "Footer", night: true },
 ];
 
 /**
- * A rail of ticks at the right edge, one per section, the way a contract
- * carries its clause numbers in the margin. It appears once the reader
- * has left the hero and lightens over the night section.
+ * A rail of ticks at the right edge of the product page, one per section,
+ * the way a contract carries its clause numbers in the margin. It appears
+ * once the reader has left the page's header and lightens over the night
+ * section.
  */
 export function ProgressRail() {
-  const [active, setActive] = useState("top");
+  const [active, setActive] = useState("overview");
 
   useEffect(() => {
     const els = STOPS.map((s) => document.getElementById(s.id)).filter(
@@ -45,7 +43,7 @@ export function ProgressRail() {
       aria-label="Sections"
       className={cn(
         "fixed top-1/2 right-5 z-40 hidden -translate-y-1/2 transition-opacity duration-700 xl:block",
-        active === "top" || active === "site-footer"
+        active === "overview" || active === "site-footer"
           ? "opacity-0"
           : "opacity-100",
       )}
