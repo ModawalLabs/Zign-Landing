@@ -89,7 +89,7 @@ export function Wordmark({
       />
       <span
         className={cn(
-          "font-serif text-[19px] leading-none font-semibold tracking-[-0.01em]",
+          "font-sans text-[18px] leading-none font-semibold tracking-[-0.03em]",
           tone === "ink" ? "text-ink" : "text-night-text",
         )}
       >

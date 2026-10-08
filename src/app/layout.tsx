@@ -12,10 +12,10 @@ import { site } from "@/config/site";
 
 import "./globals.css";
 
-/* Three families. Geist for the interface and reading text: a neutral
-   grotesk that stays crisp at 15px and shares its drawing with Geist Mono,
-   used for figures, labels and codes. Source Serif for display, with the
-   italic reserved for the hero and the closing line. */
+/* Three families. Geist for the interface, the reading text and every
+   headline: a neutral grotesk that stays crisp at 15px and shares its
+   drawing with Geist Mono, used for figures, labels and codes. Source
+   Serif only for paper: the documents drawn on the page. */
 const sans = Geist({
   variable: "--font-geist",
   subsets: ["latin"],
@@ -26,7 +26,6 @@ const serif = Source_Serif_4({
   variable: "--font-serif-display",
   subsets: ["latin"],
   style: ["normal", "italic"],
-  axes: ["opsz"],
   display: "swap",
 });
 
